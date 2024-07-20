@@ -1,12 +1,13 @@
 import os
+from dotenv import load_dotenv
 
 from langchain_community.document_loaders import PyPDFDirectoryLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_openai import OpenAIEmbeddings
 from langchain.vectorstores import Chroma
 
-os.environ["OPENAI_API_KEY"] = "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"
-
+load_dotenv()
+openai_key = os.getenv("OPENAI_API_KEY")
 
 def text_split(documents):
     text_splitter = RecursiveCharacterTextSplitter(
@@ -54,7 +55,7 @@ def create_ids_to_chunks(chunks):
 def add_data_Chroma(chunks):
     db = Chroma(
         persist_directory = "chroma", 
-        embedding_function=OpenAIEmbeddings()
+        embedding_function=OpenAIEmbeddings(openai_api_key=openai_key)
     )   #Storing chunks as vectore in the Chrome Database
     
     chunks_with_ids = create_ids_to_chunks(chunks) #returning chunks accompanied w id
