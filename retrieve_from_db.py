@@ -14,7 +14,7 @@ def get_similarity_from_db(query_text):
         embedding_function=OpenAIEmbeddings(api_key=openai_api_key)
     )   #Storing chunks as vectore in the Chrome Database
 
-    results = db.similarity_search_with_score(query_text, k=5) # Search the database
+    results = db.similarity_search_with_score(query_text, k=3) # Search the database
 
     context = """"""  #This will be passed into query template
     references = set() # Storing the sources and the page that answer was generated from
@@ -26,8 +26,8 @@ def get_similarity_from_db(query_text):
         page = result[0].metadata['page']
         source = result[0].metadata['source']
         references.add(f"file: {source}, page: {page} | ")
-    print("Context:")
-    print(context)
+    # print("Context:")
+    # print(context)
     # print("\nReferences:")
     # for ref in references:
     #     print(ref)
