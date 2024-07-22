@@ -58,24 +58,16 @@ def add_data_Chroma(chunks):
         embedding_function=OpenAIEmbeddings(openai_api_key=openai_key)
     )   #Storing chunks as vectore in the Chrome Database
     
-    chunks_with_ids = create_ids_to_chunks(chunks) #returning chunks accompanied w id
+    chunks_with_ids = create_ids_to_chunks(chunks) #returning chunks accompanied w id to avoid adding duplicates to database
     check_and_add_chunks(db, chunks_with_ids)
     
         
-def database():
+def update_database():
     document_loader = PyPDFDirectoryLoader("data")    #Loading documents
     documents = document_loader.load()                #Storing as list of pages
     chunks = text_split(documents)                    #Splitting docs into chunks   
-     
-    # with open("data/monopoly.txt","w") as file:
-        
-    #     for split in splits:
-    #         file.write(f"""
-    #                    {split}
-    #                    ________________________
-    #                    """)
     add_data_Chroma(chunks)                         #adding chunks to Chroma database
 
 if __name__ == "__main__":
-    database()
+    update_database() #This function is called to update the current database
 
