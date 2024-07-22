@@ -33,7 +33,8 @@ SYSTEM_ROLE = """
 
 
 SUMMARIZE_CHAT = """
-Summarize the following conversation into one sentence for each role. Ensure your summary follows the exact format specified below:
+Summarize the following conversation into one sentence for each role. Make sure the summary is as comprehensive as possible.
+Ensure your summary follows the exact format specified below:
 
 {summary_prompt}
 _____________
