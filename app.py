@@ -5,7 +5,7 @@ from flask_cors import CORS
 FLASK_RUN_HOST = os.environ.get('FLASK_RUN_HOST', "localhost")
 FLASK_RUN_PORT = os.environ.get('FLASK_RUN_PORT', "8000")
 
-UPLOAD_FOLDER = "uploads"
+UPLOAD_FOLDER = "data"
 
 app = Flask(__name__)
 CORS(app)
