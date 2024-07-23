@@ -15,6 +15,7 @@ def get_similarity_from_db(query_text):
     )   #Storing chunks as vectore in the Chrome Database
 
     results = db.similarity_search_with_score(query_text, k=3) # Search the database
+    # print(results)
 
     context = """"""  #This will be passed into query template
     references = set() # Storing the sources and the page that answer was generated from

@@ -27,9 +27,25 @@ def generate_answer(user_message):
     messages=[
         {"role": "system", "content": SYSTEM_ROLE},
         {"role": "user", "content": QUERY_WITH_HISTORY.format(context=context,chat_history=chat_history,question=user_message)}
-    ]
+    ],
+    # stream=True
     )
     bot_mess = completion.choices[0].message.content
+    # ATTEMPT TO STREAM THE MESSAGE
+    # stream_messages = []
+    # bot_mess = ""
+    # for idx,chunk in enumerate(completion):
+    #     chunk_message = chunk.choices[0].delta.content
+    #     if idx == 0:
+    #         print(f"Bot: {chunk_message}",end='', flush=True)
+    #     elif idx != 0 and chunk_message:
+    #         print(chunk_message, end='', flush=True)
+    #     stream_messages.append(chunk_message)
+    # print(stream_messages)
+    # for word in stream_messages:
+    #     if word:
+    #         bot_mess += word
+    # print(bot_mess)
 
     #Chat history
     chat_history.append({"role":"user","content":user_message}) 
@@ -40,7 +56,7 @@ def generate_answer(user_message):
 
 def summarize_chat_history(chat_history):
     history_length = sum(len(message["content"].split()) for message in chat_history)
-    print("chat_history before summarize: ",chat_history)
+    # print("chat_history before summarize: ",chat_history)
 
     if history_length > 250:
         
@@ -69,11 +85,11 @@ def summarize_chat_history(chat_history):
             chat_history.append({"role": "user", "content": summary_dict["user"]})
         if "bot" in summary_dict:
             chat_history.append({"role": "bot", "content": summary_dict["bot"]})
-        print("new chat history: ",chat_history, "its type is: ", type(chat_history))
+        # print("new chat history: ",chat_history, "its type is: ", type(chat_history))
         
     return chat_history
 
-if __name__ == "__main__" :
+def main():
     update_database() #Update database if files are added
     while True:
         user_input = input("User: ")
@@ -82,5 +98,9 @@ if __name__ == "__main__" :
             break
         bot_message, references = generate_answer(user_input)
         print(f"Bot: {bot_message}")
-        print(f"References: {references}")
+        print(f"\nReferences: {references}")
     
+    
+if __name__ == "__main__" :
+    main()
+
