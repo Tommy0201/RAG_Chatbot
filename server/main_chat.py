@@ -3,10 +3,10 @@ import json
 from dotenv import load_dotenv
 
 import openai
-from retrieve_from_db import get_similarity_from_db
-from database import update_database
+from server.retrieve_from_db import get_similarity_from_db
+from server.database import update_database
 
-from prompt import QUERY_WITH_CONTEXT, SYSTEM_ROLE, QUERY_WITH_HISTORY, SUMMARIZE_CHAT
+from server.prompt import QUERY_WITH_CONTEXT, SYSTEM_ROLE, QUERY_WITH_HISTORY, SUMMARIZE_CHAT
 
 load_dotenv()
 os.getenv("OPENAI_API_KEY")
@@ -15,7 +15,7 @@ chat_history = []
 def generate_answer(user_message):
     #Chat history
     global chat_history
-
+    
     #Get info from database as context
     context, references = get_similarity_from_db(user_message)
     reference_str = "".join(references)

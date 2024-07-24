@@ -32,6 +32,7 @@ def check_and_add_chunks(db, chunks_with_ids):
         print(f"""new documents have been added, ids:
               {new_chunk_ids}
               """)
+        print(f"new chunks:   {new_chunks}")
     else:
         print("no new documents added")
     return
@@ -66,6 +67,7 @@ def update_database():
     document_loader = PyPDFDirectoryLoader("data")    #Loading documents
     documents = document_loader.load()                #Storing as list of pages
     chunks = text_split(documents)                    #Splitting docs into chunks   
+    # print(chunks)
     add_data_Chroma(chunks)                         #adding chunks to Chroma database
 
 if __name__ == "__main__":
