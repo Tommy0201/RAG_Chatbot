@@ -3,8 +3,8 @@ import json
 from dotenv import load_dotenv
 
 import openai
-from server.retrieve_from_db import get_similarity_from_db
-from server.database import update_database
+from server.database_utils.retrieve_from_db import get_similarity_from_db
+from server.database_utils.update_database import update_database
 
 from server.prompt import QUERY_WITH_CONTEXT, SYSTEM_ROLE, QUERY_WITH_HISTORY, SUMMARIZE_CHAT
 
@@ -58,7 +58,7 @@ def summarize_chat_history(chat_history):
     history_length = sum(len(message["content"].split()) for message in chat_history)
     # print("chat_history before summarize: ",chat_history)
 
-    if history_length > 250:
+    if history_length > 300:
         
         #Formatting summary
         summary = """"""
@@ -101,6 +101,6 @@ def main():
         print(f"\nReferences: {references}")
     
     
-if __name__ == "__main__" :
-    main()
+# if __name__ == "__main__" :
+#     main()
 

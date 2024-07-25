@@ -32,7 +32,7 @@ def check_and_add_chunks(db, chunks_with_ids):
         print(f"""new documents have been added, ids:
               {new_chunk_ids}
               """)
-        print(f"new chunks:   {new_chunks}")
+        # print(f"new chunks:   {new_chunks}")
     else:
         print("no new documents added")
     return
