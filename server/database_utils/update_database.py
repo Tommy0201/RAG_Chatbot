@@ -29,9 +29,9 @@ def check_and_add_chunks(db, chunks_with_ids):
     if len(new_chunks):
         new_chunk_ids = [chunk.metadata["id"] for chunk in new_chunks]
         db.add_documents(new_chunks, ids=new_chunk_ids)
-        print(f"""new documents have been added, ids:
-              {new_chunk_ids}
-              """)
+        # print(f"""new documents have been added, ids:
+        #       {new_chunk_ids}
+        #       """)
         # print(f"new chunks:   {new_chunks}")
     else:
         print("no new documents added")
