@@ -3,9 +3,7 @@
 pip install -r requirements.txt
 
 
-## Adding pdf file to "data" directory if needed
 
+## This is the backend for my RAG chatbot, to run this backend, type:
 
-## To run chatbot and starting asking questions (can be related to upload pdf documents)
-
-python main.py 
+python app.py
