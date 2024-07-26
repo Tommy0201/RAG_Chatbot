@@ -1,5 +1,6 @@
 import os
 import json
+import time
 from dotenv import load_dotenv
 
 import openai
@@ -12,6 +13,7 @@ load_dotenv()
 os.getenv("OPENAI_API_KEY")
 chat_history = []
 
+
 def generate_answer(user_message):
     #Chat history
     global chat_history
@@ -19,6 +21,7 @@ def generate_answer(user_message):
     #Get info from database as context
     context, references = get_similarity_from_db(user_message)
     reference_str = "".join(references)
+    reference_str = reference_str[:-2]
     
     #Calling GPT API to get answer
     client = openai.Client()
@@ -28,9 +31,18 @@ def generate_answer(user_message):
         {"role": "system", "content": SYSTEM_ROLE},
         {"role": "user", "content": QUERY_WITH_HISTORY.format(context=context,chat_history=chat_history,question=user_message)}
     ],
-    # stream=True
+    stream=True
     )
-    bot_mess = completion.choices[0].message.content
+    def stream_response():
+        bot_mess = ""
+        for chunk in completion:
+            chunk_message = chunk.choices[0].delta.content
+            if chunk_message:
+                bot_mess += chunk_message
+                yield(chunk_message)
+            time.sleep(0.05)
+        update_history(user_message,bot_mess)
+    # bot_mess = completion.choices[0].message.content
     # ATTEMPT TO STREAM THE MESSAGE
     # stream_messages = []
     # bot_mess = ""
@@ -46,13 +58,16 @@ def generate_answer(user_message):
     #     if word:
     #         bot_mess += word
     # print(bot_mess)
+    return stream_response()
 
+def update_history(user_message,bot_mess):
     #Chat history
+    global chat_history
     chat_history.append({"role":"user","content":user_message}) 
     chat_history.append({"role":"bot","content":bot_mess})
     chat_history = summarize_chat_history(chat_history) #Summarize chat history if it is too long
-
-    return bot_mess, reference_str[:-2]
+    return
+    
 
 def summarize_chat_history(chat_history):
     history_length = sum(len(message["content"].split()) for message in chat_history)

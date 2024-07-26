@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Response
 from flask_cors import CORS
 from server.main_chat import generate_answer
 from server.database_utils.update_database import update_database
@@ -46,8 +46,13 @@ def delete_data():
 @app.route('/chat', methods=["POST"]) 
 def chat():
     message = request.json.get("message")
-    bot_response, reference = generate_answer(message)
+    bot_response = generate_answer(message)
     return jsonify({"message": bot_response}),200
+
+@app.route('/chat_stream', methods=["POST"]) 
+def chat_stream():
+    message = request.json.get("message")
+    return Response(generate_answer(message),content_type="text/plain"),200
     
 if __name__ == "__main__":
     app.run(host=FLASK_RUN_HOST,port=FLASK_RUN_PORT)
