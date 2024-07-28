@@ -1,19 +1,22 @@
-# Use the official Python image from the Docker Hub
-FROM python:3.9
+FROM python:3.9-slim
 
-# Set the working directory
 WORKDIR /app
 
-# Copy the requirements file and install dependencies
-COPY requirements.txt /app/
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+COPY requirements.txt .
 
-# Copy the rest of the application code
-COPY . /app/
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Expose the port the app runs on
+COPY app.py .
+COPY chroma/ chroma/
+COPY data/ data/
+COPY server/ server/
+
 EXPOSE 8000
 
-# Run the application
-CMD ["python", "app.py"]
+ENV FLASK_APP=app.py
+ENV FLASK_RUN_HOST=0.0.0.0
+ENV FLASK_RUN_PORT=8000
+
+CMD ["flask", "run"]
+
+
