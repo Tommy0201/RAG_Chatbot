@@ -14,9 +14,9 @@ app = Flask(__name__)
 CORS(app)
 
 
-# @app.route('/')
-# def index():
-#     return "HellOOOO"
+@app.route('/')
+def index():
+    return "HellOOOO"
 
 @app.route('/upload_file', methods=["POST"])
 def upload_file():
@@ -55,4 +55,4 @@ def chat_stream():
     return Response(generate_answer(message),content_type="text/plain"),200
     
 if __name__ == "__main__":
-    app.run(host=FLASK_RUN_HOST,port=FLASK_RUN_PORT)
+    app.run(host=FLASK_RUN_HOST,port=FLASK_RUN_PORT,debug=True)
